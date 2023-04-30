@@ -4,3 +4,8 @@ services:
     image: inception-server
     ports:
       - "8080:443"
+  inception-wp:
+    build: ./requirements/wordpress
+    image: inception-wp
+    ports:
+      - "9000:9000"

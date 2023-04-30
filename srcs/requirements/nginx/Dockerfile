@@ -9,6 +9,4 @@ COPY ssl/server.password /etc/nginx/ssl/server.password
 
 RUN echo "hello world" > /var/www/index.html
 
-EXPOSE 443
-
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
