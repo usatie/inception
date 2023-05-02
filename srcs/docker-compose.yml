@@ -9,3 +9,8 @@ services:
     image: inception-wp
     ports:
       - "9000:9000"
+  inception-db:
+    build: ./requirements/mariadb
+    image: inception-db
+    ports:
+      - "3306:3306"

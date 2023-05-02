@@ -1,7 +1,6 @@
 FROM alpine:3.17.3
-#FROM php:8.1-fpm-alpine
 
-RUN apk add --update --no-cache php81 php81-fpm
+RUN apk add --update --no-cache php81 php81-fpm php81-mysqli
 
 # Download, Extract, Move to /var/www/html, and Remove wordpress.tar.gz in one line
 RUN wget https://wordpress.org/latest.tar.gz \
