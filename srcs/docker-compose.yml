@@ -1,16 +1,33 @@
 services:
-  inception-server:
-    build: ./requirements/nginx
-    image: inception-server
-    ports:
-      - "8080:443"
-  inception-wp:
-    build: ./requirements/wordpress
-    image: inception-wp
-    ports:
-      - "9000:9000"
   inception-db:
     build: ./requirements/mariadb
     image: inception-db
     ports:
       - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+  inception-wp:
+    build: ./requirements/wordpress
+    image: inception-wp
+    ports:
+      - "9000:9000"
+    volumes:
+      - wp_data:/var/www/html
+    depends_on:
+      - inception-db
+    restart: always
+  inception-server:
+    build: ./requirements/nginx
+    image: inception-server
+    ports:
+      - "8080:443"
+    volumes:
+      - wp_data:/var/www/html
+    depends_on:
+      - inception-wp
+    restart: always
+
+volumes:
+  wp_data:
+  db_data:

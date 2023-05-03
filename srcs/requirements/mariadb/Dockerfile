@@ -3,6 +3,7 @@ FROM alpine:3.17.3
 RUN apk add --update --no-cache mysql mysql-client openrc \
 	&& mkdir -p /run/openrc \
 	&& touch /run/openrc/softlevel \
+	&& sed -i 's/^skip-networking/skip-networking = 0\nskip-bind-address\nskip-name-resolve\nport = 3306\ncharacter-set-server = utf8/g' /etc/my.cnf.d/mariadb-server.cnf \
 	&& rc-status \
 	&& rc-service mariadb setup \
 	&& rc-service mariadb start \
@@ -19,4 +20,5 @@ RUN apk add --update --no-cache mysql mysql-client openrc \
 
 USER mysql
 #ENTRYPOINT ["/bin/sh"]
+EXPOSE 3306
 ENTRYPOINT ["mysqld", "--datadir=/var/lib/mysql"]
