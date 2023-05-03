@@ -11,6 +11,12 @@ RUN wget https://wordpress.org/latest.tar.gz \
 	&& adduser -u 82 -D -S -G www-data www-data \
 	&& chown -R www-data:www-data /var/www/html/wordpress
 
+COPY conf/wp-config.php /var/www/html/wordpress/wp-config.php
 COPY conf/zz-docker.conf /etc/php81/php-fpm.d/zz-docker.conf
 
+EXPOSE 9000
+
+# php-fpm can't run as www-data, why?
+#USER www-data
+WORKDIR /var/www/html/wordpress
 ENTRYPOINT ["php-fpm81", "--nodaemonize"]

@@ -17,6 +17,11 @@ services:
     depends_on:
       - inception-db
     restart: always
+    environment:
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_DB_HOST: inception-db:3306
   inception-server:
     build: ./requirements/nginx
     image: inception-server
