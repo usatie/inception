@@ -7,6 +7,17 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     restart: always
+    environment:
+      MYSQL_DATA_PATH: /var/lib/mysql
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   inception-wp:
     build: ./requirements/wordpress
     image: inception-wp
@@ -15,13 +26,23 @@ services:
     volumes:
       - wp_data:/var/www/html
     depends_on:
-      - inception-db
+      inception-db:
+        condition: service_healthy
     restart: always
     environment:
-      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
-      WORDPRESS_DB_USER: ${MYSQL_USER}
-      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
-      WORDPRESS_DB_HOST: inception-db:3306
+      DB_NAME: ${MYSQL_DATABASE}
+      DB_USER: ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      DB_HOST: inception-db:3306
+      WP_DATA_PATH: /var/www/html/wordpress
+      WP_URL: ${WP_URL}
+      WP_TITLE: ${WP_TITLE}
+      WP_ADMIN_USER: ${WP_ADMIN_USER}
+      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
+      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
+      WP_EDITOR_USER: ${WP_EDITOR_USER}
+      WP_EDITOR_PASSWORD: ${WP_EDITOR_PASSWORD}
+      WP_EDITOR_EMAIL: ${WP_EDITOR_EMAIL}
   inception-server:
     build: ./requirements/nginx
     image: inception-server

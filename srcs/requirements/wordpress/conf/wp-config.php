@@ -1,4 +1,3 @@
-# cat wp-config-sample.php
 <?php
 /**
  * The base configuration for WordPress
