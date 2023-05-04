@@ -15,9 +15,11 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
+      interval: 1s
       timeout: 5s
-      retries: 5
+      retries: 30
+    networks:
+      - inception-network
   inception-wp:
     build: ./requirements/wordpress
     image: inception-wp
@@ -43,16 +45,25 @@ services:
       WP_EDITOR_USER: ${WP_EDITOR_USER}
       WP_EDITOR_PASSWORD: ${WP_EDITOR_PASSWORD}
       WP_EDITOR_EMAIL: ${WP_EDITOR_EMAIL}
+    networks:
+      - inception-network
   inception-server:
     build: ./requirements/nginx
     image: inception-server
     ports:
-      - "8080:443"
+      - "443:443"
     volumes:
       - wp_data:/var/www/html
     depends_on:
       - inception-wp
     restart: always
+    networks:
+      inception-network:
+        aliases:
+          - ${DOMAIN_NAME}
+
+networks:
+  inception-network:
 
 volumes:
   wp_data:

@@ -19,4 +19,4 @@ if [ ! -d "${MYSQL_DATA_PATH}/mysql" ]; then
     rc-service mariadb stop
 fi
 
-mysqld --datadir=/var/lib/mysql --user=mysql
+exec mysqld --datadir=/var/lib/mysql --user=mysql
