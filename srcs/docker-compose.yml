@@ -1,9 +1,9 @@
 services:
-  inception-db:
+  mariadb:
     build: ./requirements/mariadb
-    image: inception-db
+    image: mariadb
     ports:
-      - "3306:3306"
+      - ":3306"
     volumes:
       - db_data:/var/lib/mysql
     restart: always
@@ -20,22 +20,22 @@ services:
       retries: 30
     networks:
       - inception-network
-  inception-wp:
+  wordpress:
     build: ./requirements/wordpress
-    image: inception-wp
+    image: wordpress
     ports:
-      - "9000:9000"
+      - ":9000"
     volumes:
       - wp_data:/var/www/html
     depends_on:
-      inception-db:
+      mariadb:
         condition: service_healthy
     restart: always
     environment:
       DB_NAME: ${MYSQL_DATABASE}
       DB_USER: ${MYSQL_USER}
       DB_PASSWORD: ${MYSQL_PASSWORD}
-      DB_HOST: inception-db:3306
+      DB_HOST: mariadb:3306
       WP_DATA_PATH: /var/www/html/wordpress
       WP_URL: ${WP_URL}
       WP_TITLE: ${WP_TITLE}
@@ -47,15 +47,15 @@ services:
       WP_EDITOR_EMAIL: ${WP_EDITOR_EMAIL}
     networks:
       - inception-network
-  inception-server:
+  nginx:
     build: ./requirements/nginx
-    image: inception-server
+    image: nginx
     ports:
       - "443:443"
     volumes:
       - wp_data:/var/www/html
     depends_on:
-      - inception-wp
+      - wordpress
     restart: always
     networks:
       inception-network:
