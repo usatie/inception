@@ -1,11 +1,12 @@
 FROM alpine:3.17.3
 
-RUN apk add --update --no-cache nginx
+RUN apk add --update --no-cache nginx openssl gettext
 COPY conf/nginx.conf /etc/nginx/nginx.conf
-RUN mkdir -p /etc/nginx/https.d
-COPY conf/ssl.conf /etc/nginx/https.d/ssl.conf
-COPY ssl/server.crt /etc/nginx/ssl/server.crt
-COPY ssl/server.key /etc/nginx/ssl/server.key
-COPY ssl/server.password /etc/nginx/ssl/server.password
+RUN mkdir -p /etc/nginx/https.d \
+	&& mkdir -p /etc/nginx/ssl
+COPY conf/ssl.conf /etc/nginx/https.d/ssl.template
+WORKDIR /etc/nginx
 
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+COPY entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["entrypoint.sh"]
+EXPOSE 443

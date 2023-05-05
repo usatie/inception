@@ -57,6 +57,13 @@ services:
     depends_on:
       - wordpress
     restart: always
+    environment:
+      - COUNTRY
+      - STATE
+      - ORGANIZATION
+      - CERT_NAME
+      - DOMAIN_NAME
+      - RSA_KEY_NUMBITS
     networks:
       inception-network:
         aliases:
