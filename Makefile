@@ -8,7 +8,7 @@ ENVFILE				=	$(SRCS_DIR)/.env
 re: clean build up
 
 .PHONY: clean
-clean:
+clean: $(ENVFILE)
 	cd $(SRCS_DIR) && docker compose down -v --rmi all --remove-orphans
 
 .PHONY: up
@@ -20,7 +20,7 @@ build: $(ENVFILE)
 	cd $(SRCS_DIR) && docker compose build
 
 .PHONY: down
-down:
+down: $(ENVFILE)
 	cd $(SRCS_DIR) && docker compose down
 
 $(ENVFILE):
