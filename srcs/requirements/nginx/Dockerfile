@@ -1,4 +1,4 @@
-FROM alpine:3.17.3
+FROM alpine:3.17.2
 
 RUN apk add --update --no-cache nginx openssl gettext
 COPY conf/nginx.conf /etc/nginx/nginx.conf
