@@ -74,4 +74,14 @@ networks:
 
 volumes:
   wp_data:
+    driver: local
+    driver_opts:
+      o: bind
+      device: ${WP_VOLUME_DIR}
+      type: anything_is_ok
   db_data:
+    driver: local
+    driver_opts:
+      o: bind
+      device: ${DB_VOLUME_DIR}
+      type: anything_is_ok
