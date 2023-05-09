@@ -5,6 +5,9 @@ REQUIREMENTS_DIR	=	$(SRCS_DIR)/requirements
 NGINX_DIR			=	$(REQUIREMENTS_DIR)/nginx
 ENVFILE				=	$(SRCS_DIR)/.env
 
+RED=\033[0;31m
+RESET=\033[0m
+
 .PHONY: all
 all: build up
 
@@ -33,4 +36,5 @@ fclean: clean
 re: fclean build up
 
 $(ENVFILE):
-	cp $(ENVFILE).sample $(ENVFILE)
+	@echo "${RED}YOU NEED TO CREATE: srcs/.env${RESET}"
+	@echo "${RED}RUN 'cp srcs/.env.sample srcs/.env' AND EDIT VALUES IF NECESSARY.${RESET}"
